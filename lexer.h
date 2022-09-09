@@ -20,8 +20,11 @@ private:
     Token completeIdentifier(char lastChar);
     Token completeNumber(char lastNumber);
     Token commentToSpace();
-    bool isSpace(char c);
+    Token completeDirective(char lastChar);
+    bool isSpace(char c) const;
     bool isKeyword(const std::string& identifier) const;
+    bool isNumber(char c) const;
+    bool isChar(char c) const;
 
     template<class T>
     [[nodiscard]] bool checkOpen(const T& stream) const;
@@ -30,6 +33,7 @@ private:
         "int", "bool", "char", "float", "double", "return", "false",
         "const", "noexcept", "final", "class", "struct", "true",
         "template", "private", "public", "protected", "std::string",
+        "std::cout", "std::endl"
     };
 
     std::ifstream m_inputFileStream;

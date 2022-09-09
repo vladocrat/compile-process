@@ -15,6 +15,7 @@ public:
         Literal,
         Separator,
         Undentified,
+        Directive,
         EndOfFile
     };
 
@@ -34,7 +35,8 @@ private:
         { Kind::Identifier, "Identifier" }, { Kind::Operator, "Operator" },
         { Kind::Keyword, "Keyword" }, { Kind::Parenthesis, "Parenthesis" },
         { Kind::Literal, "Literal" }, { Kind::Separator, "Separator"},
-        { Kind::Undentified, "Undentified" }, { Kind::EndOfFile, "EOF" }
+        { Kind::Undentified, "Undentified" }, { Kind::EndOfFile, "EOF" },
+        { Kind::Directive, "Directive" }
     };
 
     Kind m_kind { Kind::Undentified };

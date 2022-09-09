@@ -47,11 +47,11 @@ Token Lexer::next()
         switch (c)
         {
         case '\n':
-            return Token(Token::Kind::Separator, "\n");
+            return Token(Token::Kind::Separator, "\\n");
         case '\r':
-            return Token(Token::Kind::Separator, "\r");
+            return Token(Token::Kind::Separator, "\\r");
         case '\t':
-            return Token(Token::Kind::Separator, "\t");
+            return Token(Token::Kind::Separator, "\\t");
         case ' ':
             return Token(Token::Kind::Separator, " ");
         case 'a':
@@ -121,7 +121,9 @@ Token Lexer::next()
         case '/':
             return commentToSpace();
         case '#':
-            return {};
+            return completeDirective(c);
+        case ';':
+            return Token(Token::Kind::Operator, ";");
         }
     }
 
@@ -132,10 +134,11 @@ Token Lexer::completeIdentifier(char lastChar)
 {
     std::string finalString = "";
     finalString += lastChar;
-    char c = ' ';
+    char c = lastChar;
 
-    while (!m_inputFileStream.get(c) || !isSpace(c))
+    while ((isChar(c)) && isChar(m_inputFileStream.peek()))
     {
+        m_inputFileStream.get(c);
         finalString += c;
     }
 
@@ -153,8 +156,9 @@ Token Lexer::completeNumber(char lastNumber)
     finalString += lastNumber;
     char c = ' ';
 
-    while (!m_inputFileStream.get(c) || !isSpace(c))
+    while (isNumber(c) && isNumber(m_inputFileStream.peek()))
     {
+        m_inputFileStream.get(c);
         finalString += c;
     }
 
@@ -175,7 +179,21 @@ Token Lexer::commentToSpace()
     return Token(Token::Kind::Separator, "\n");
 }
 
-bool Lexer::isSpace(char c)
+Token Lexer::completeDirective(char lastChar)
+{
+    std::string finalString = "";
+    finalString += lastChar;
+    char c = ' ';
+
+    while ((!m_inputFileStream.get(c) || !isSpace(c)) && isChar(c))
+    {
+        finalString += c;
+    }
+
+    return Token(Token::Kind::Directive, finalString);
+}
+
+bool Lexer::isSpace(char c) const
 {
     switch (c)
     {
@@ -195,6 +213,88 @@ bool Lexer::isKeyword(const std::string& identifier) const
 
     if (it != end(m_keywords))
     {
+        return true;
+    }
+
+    return false;
+}
+
+bool Lexer::isNumber(char c) const
+{
+    switch (c)
+    {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+        return true;
+    }
+
+    return false;
+}
+
+bool Lexer::isChar(char c) const
+{
+    switch (c)
+    {
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+    case 'g':
+    case 'h':
+    case 'i':
+    case 'j':
+    case 'k':
+    case 'l':
+    case 'm':
+    case 'n':
+    case 'o':
+    case 'p':
+    case 'q':
+    case 'r':
+    case 's':
+    case 't':
+    case 'u':
+    case 'v':
+    case 'w':
+    case 'x':
+    case 'y':
+    case 'z':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F':
+    case 'G':
+    case 'H':
+    case 'I':
+    case 'J':
+    case 'K':
+    case 'L':
+    case 'M':
+    case 'N':
+    case 'O':
+    case 'P':
+    case 'Q':
+    case 'R':
+    case 'S':
+    case 'T':
+    case 'U':
+    case 'V':
+    case 'W':
+    case 'X':
+    case 'Y':
+    case 'Z':
         return true;
     }
 
