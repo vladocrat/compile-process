@@ -19,6 +19,8 @@ public:
         SemiColon,
         OpenedBrace,
         ClosedBrace,
+        OpenedCurlyBrace,
+        ClosedCurlyBrace,
         EndOfFile
     };
 
@@ -42,6 +44,7 @@ private:
         { Kind::Directive, "Directive" },                { Kind::Colon, "Colon" },
         { Kind::OpenedBrace, "OpenBrace" },              { Kind::OpenedBrace, "OpenBrace" },
         { Kind::ClosedBrace, "ClosedBrace" },            { Kind::ClosedBrace, "ClosedBrace" },
+        { Kind::OpenedCurlyBrace, "OpenedCurlyBrace" },  { Kind::ClosedCurlyBrace, "ClosedCurlyBrace"},
     };
 
     Kind m_kind { Kind::Undentified };

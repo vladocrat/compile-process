@@ -22,6 +22,7 @@ private:
     Token commentToSpace();
     Token completeDirective(char lastChar);
     Token completeAngledBrace(char lastChar);
+    Token completeStringLiteral(char lastChar);
     bool isSpace(char c) const;
     bool isKeyword(const std::string& identifier) const;
     bool isNumber(char c) const;
@@ -35,7 +36,8 @@ private:
         "int", "bool", "char", "float", "double", "return", "false",
         "const", "noexcept", "final", "class", "struct", "true",
         "template", "private", "public", "protected", "string",
-        "cout", "endl", "std",
+        "cout", "endl", "std", "if", "while", "switch", "do", "ostream",
+        "fstream", "ifstream",
     };
 
     std::ifstream m_inputFileStream;

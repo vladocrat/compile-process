@@ -134,6 +134,12 @@ Token Lexer::next()
             return completeAngledBrace(c);
         case '>':
             return completeAngledBrace(c);
+        case '{':
+            return Token(Token::Kind::OpenedCurlyBrace, "{");
+        case '}':
+            return Token(Token::Kind::ClosedCurlyBrace, "}");
+        case '\"':
+            return completeStringLiteral(c);
         }
     }
 
@@ -225,6 +231,24 @@ Token Lexer::completeAngledBrace(char lastChar)
     return Token(Token::Kind::Operator, finalString);
 }
 
+Token Lexer::completeStringLiteral(char lastChar)
+{
+    std::string finalString = "";
+    finalString += lastChar;
+    char c = ' ';
+
+    while (m_inputFileStream.peek() != '\"')
+    {
+        m_inputFileStream.get(c);
+        finalString += c;
+    }
+
+    m_inputFileStream.get(c);
+    finalString += c;
+
+    return Token(Token::Kind::Literal, finalString);
+}
+
 bool Lexer::isSpace(char c) const
 {
     switch (c)
@@ -275,6 +299,7 @@ bool Lexer::isChar(char c) const
 {
     switch (c)
     {
+    case '_':
     case 'a':
     case 'b':
     case 'c':
