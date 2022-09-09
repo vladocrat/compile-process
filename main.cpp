@@ -4,7 +4,7 @@
 
 int main()
 {
-    Lexer l("file.txt");
+    Lexer l("token.h", "newFile.txt");
     l.parse();
 
     return 0;

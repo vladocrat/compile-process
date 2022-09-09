@@ -10,8 +10,8 @@
 class Lexer final
 {
 public:
-    Lexer(const std::string& filePath);
-    ~Lexer() noexcept;
+    Lexer(const std::string& filePath, const std::string& writeFilePath);
+    ~Lexer();
 
     void parse();
 
@@ -37,11 +37,11 @@ private:
         "const", "noexcept", "final", "class", "struct", "true",
         "template", "private", "public", "protected", "string",
         "cout", "endl", "std", "if", "while", "switch", "do", "ostream",
-        "fstream", "ifstream",
+        "fstream", "ifstream", "operator",
     };
 
     std::ifstream m_inputFileStream;
-    std::fstream m_outputFileStream;
+    std::ofstream m_outputFileStream;
 };
 
 #endif // LEXER_H

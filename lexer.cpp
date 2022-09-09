@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-Lexer::Lexer(const std::string &filePath)
+Lexer::Lexer(const std::string& filePath, const std::string& writeFilePath)
 {
     m_inputFileStream.open(filePath);
 
@@ -10,9 +10,16 @@ Lexer::Lexer(const std::string &filePath)
     {
         //throw new runtime exception
     }
+
+    m_outputFileStream.open(writeFilePath);
+
+    if (!checkOpen(m_outputFileStream))
+    {
+        //throw new runtime exception
+    }
 }
 
-Lexer::~Lexer() noexcept
+Lexer::~Lexer()
 {
     if (!checkOpen(m_inputFileStream)) {
         //throw new runtime exception
@@ -34,7 +41,8 @@ void Lexer::parse()
 
     do {
         t = next();
-        std::cout << t << std::endl;
+        //std::cout << t << std::endl;
+        m_outputFileStream << t << "\n";
     } while (t != Token(Token::Kind::EndOfFile, ""));
 }
 
@@ -140,6 +148,22 @@ Token Lexer::next()
             return Token(Token::Kind::ClosedCurlyBrace, "}");
         case '\"':
             return completeStringLiteral(c);
+        case '=':
+            return Token(Token::Kind::Operator, "=");
+        case '*':
+            return Token(Token::Kind::Operator, "*");
+        case '+':
+            return Token(Token::Kind::Operator, "+");
+        case '-':
+            return Token(Token::Kind::Operator, "-");
+        case '!':
+            return Token(Token::Kind::Operator, "!");
+        case '&':
+            return Token(Token::Kind::Operator, "&");
+        case '.':
+            return Token(Token::Kind::Operator, ".");
+        case ',':
+            return Token(Token::Kind::Operator, ",");
         }
     }
 
