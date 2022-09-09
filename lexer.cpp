@@ -53,7 +53,7 @@ Token Lexer::next()
         case '\t':
             return Token(Token::Kind::Separator, "\\t");
         case ' ':
-            return Token(Token::Kind::Separator, " ");
+            return Token(Token::Kind::Separator, "\' \'");
         case 'a':
         case 'b':
         case 'c':
@@ -123,7 +123,17 @@ Token Lexer::next()
         case '#':
             return completeDirective(c);
         case ';':
-            return Token(Token::Kind::Operator, ";");
+            return Token(Token::Kind::SemiColon, ";");
+        case ':':
+            return Token(Token::Kind::Colon, ":");
+        case '(':
+            return Token(Token::Kind::OpenedBrace, "(");
+        case ')':
+            return Token(Token::Kind::ClosedBrace, ")");
+        case '<':
+            return completeAngledBrace(c);
+        case '>':
+            return completeAngledBrace(c);
         }
     }
 
@@ -174,9 +184,14 @@ Token Lexer::commentToSpace()
 {
     char c = ' ';
 
-    while (!m_inputFileStream.get(c) || !isSpace(c));
+    while (m_inputFileStream.peek() != '\n')
+    {
+        m_inputFileStream.get(c);
+    }
 
-    return Token(Token::Kind::Separator, "\n");
+    m_inputFileStream.get(c);
+
+    return Token(Token::Kind::Separator, "\\n");
 }
 
 Token Lexer::completeDirective(char lastChar)
@@ -191,6 +206,23 @@ Token Lexer::completeDirective(char lastChar)
     }
 
     return Token(Token::Kind::Directive, finalString);
+}
+
+Token Lexer::completeAngledBrace(char lastChar)
+{
+    std::string finalString = "";
+    finalString += lastChar;
+    char c = ' ';
+
+    if (isDoubleAngledBrace(lastChar, m_inputFileStream.peek()))
+    {
+        m_inputFileStream.get(c);
+        finalString += c;
+
+        return Token(Token::Kind::Operator, finalString);
+    }
+
+    return Token(Token::Kind::Operator, finalString);
 }
 
 bool Lexer::isSpace(char c) const
@@ -299,6 +331,11 @@ bool Lexer::isChar(char c) const
     }
 
     return false;
+}
+
+bool Lexer::isDoubleAngledBrace(char currentChar, char nextChar) const
+{
+    return currentChar == nextChar;
 }
 
 template<class T>

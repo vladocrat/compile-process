@@ -21,10 +21,12 @@ private:
     Token completeNumber(char lastNumber);
     Token commentToSpace();
     Token completeDirective(char lastChar);
+    Token completeAngledBrace(char lastChar);
     bool isSpace(char c) const;
     bool isKeyword(const std::string& identifier) const;
     bool isNumber(char c) const;
     bool isChar(char c) const;
+    bool isDoubleAngledBrace(char currentChar, char nextChar) const;
 
     template<class T>
     [[nodiscard]] bool checkOpen(const T& stream) const;
@@ -32,8 +34,8 @@ private:
     const std::vector<std::string> m_keywords = {
         "int", "bool", "char", "float", "double", "return", "false",
         "const", "noexcept", "final", "class", "struct", "true",
-        "template", "private", "public", "protected", "std::string",
-        "std::cout", "std::endl"
+        "template", "private", "public", "protected", "string",
+        "cout", "endl", "std",
     };
 
     std::ifstream m_inputFileStream;

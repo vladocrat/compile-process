@@ -11,11 +11,14 @@ public:
         Identifier,
         Operator,
         Keyword,
-        Parenthesis,
         Literal,
         Separator,
         Undentified,
         Directive,
+        Colon,
+        SemiColon,
+        OpenedBrace,
+        ClosedBrace,
         EndOfFile
     };
 
@@ -32,11 +35,13 @@ public:
 
 private:
     std::map<Kind, std::string> m_kindStrings {
-        { Kind::Identifier, "Identifier" }, { Kind::Operator, "Operator" },
-        { Kind::Keyword, "Keyword" }, { Kind::Parenthesis, "Parenthesis" },
-        { Kind::Literal, "Literal" }, { Kind::Separator, "Separator"},
-        { Kind::Undentified, "Undentified" }, { Kind::EndOfFile, "EOF" },
-        { Kind::Directive, "Directive" }
+        { Kind::Identifier, "Identifier" },              { Kind::Operator, "Operator" },
+        { Kind::Keyword, "Keyword" },                    { Kind::SemiColon, "Semicolon" },
+        { Kind::Literal, "Literal" },                    { Kind::Separator, "Separator"},
+        { Kind::Undentified, "Undentified" },            { Kind::EndOfFile, "EOF" },
+        { Kind::Directive, "Directive" },                { Kind::Colon, "Colon" },
+        { Kind::OpenedBrace, "OpenBrace" },              { Kind::OpenedBrace, "OpenBrace" },
+        { Kind::ClosedBrace, "ClosedBrace" },            { Kind::ClosedBrace, "ClosedBrace" },
     };
 
     Kind m_kind { Kind::Undentified };
