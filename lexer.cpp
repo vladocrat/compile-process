@@ -202,6 +202,9 @@ Token Lexer::completeNumber(char lastNumber)
         finalString += c;
     }
 
+    m_inputFileStream.get(c);
+    finalString += c;
+
     if (isKeyword(finalString))
     {
         return Token(Token::Kind::Keyword, finalString);
