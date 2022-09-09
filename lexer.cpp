@@ -28,11 +28,21 @@ Lexer::~Lexer() noexcept
     m_outputFileStream.close();
 }
 
+void Lexer::parse()
+{
+    Token t;
+
+    do {
+        t = next();
+        std::cout << t << std::endl;
+    } while (t != Token(Token::Kind::EndOfFile, ""));
+}
+
 Token Lexer::next()
 {
     char c;
 
-    while (m_inputFileStream.get(c))
+    while (m_inputFileStream.get(c) && !m_inputFileStream.eof())
     {
         switch (c)
         {
@@ -70,12 +80,52 @@ Token Lexer::next()
         case 'x':
         case 'y':
         case 'z':
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'E':
+        case 'F':
+        case 'G':
+        case 'H':
+        case 'I':
+        case 'J':
+        case 'K':
+        case 'L':
+        case 'M':
+        case 'N':
+        case 'O':
+        case 'P':
+        case 'Q':
+        case 'R':
+        case 'S':
+        case 'T':
+        case 'U':
+        case 'V':
+        case 'W':
+        case 'X':
+        case 'Y':
+        case 'Z':
             return completeIdentifier(c);
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            return completeNumber(c);
+        case '/':
+            return commentToSpace();
+        case '#':
+            return {};
         }
-
     }
 
-    return Token(Token::Kind::Undentified, "");
+    return Token(Token::Kind::EndOfFile, "");
 }
 
 Token Lexer::completeIdentifier(char lastChar)
@@ -84,7 +134,7 @@ Token Lexer::completeIdentifier(char lastChar)
     finalString += lastChar;
     char c = ' ';
 
-    while (!m_inputFileStream.get(c) || !isSpace(c)) // will work lmao?
+    while (!m_inputFileStream.get(c) || !isSpace(c))
     {
         finalString += c;
     }
@@ -95,6 +145,34 @@ Token Lexer::completeIdentifier(char lastChar)
     }
 
     return Token(Token::Kind::Identifier, finalString);
+}
+
+Token Lexer::completeNumber(char lastNumber)
+{
+    std::string finalString = "";
+    finalString += lastNumber;
+    char c = ' ';
+
+    while (!m_inputFileStream.get(c) || !isSpace(c))
+    {
+        finalString += c;
+    }
+
+    if (isKeyword(finalString))
+    {
+        return Token(Token::Kind::Keyword, finalString);
+    }
+
+    return Token(Token::Kind::Literal, finalString);
+}
+
+Token Lexer::commentToSpace()
+{
+    char c = ' ';
+
+    while (!m_inputFileStream.get(c) || !isSpace(c));
+
+    return Token(Token::Kind::Separator, "\n");
 }
 
 bool Lexer::isSpace(char c)
