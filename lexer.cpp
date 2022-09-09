@@ -1,5 +1,7 @@
 #include "lexer.h"
 
+#include <algorithm>
+
 Lexer::Lexer(const std::string &filePath)
 {
     m_inputFileStream.open(filePath);
@@ -68,7 +70,7 @@ Token Lexer::next()
         case 'x':
         case 'y':
         case 'z':
-            return completeIdentifier();
+            return completeIdentifier(c);
         }
 
     }
@@ -76,17 +78,23 @@ Token Lexer::next()
     return Token(Token::Kind::Undentified, "");
 }
 
-Token Lexer::completeIdentifier()
+Token Lexer::completeIdentifier(char lastChar)
 {
-    auto charPointer = m_inputFileStream.tellg();
-    auto finalString = "";
+    std::string finalString = "";
+    finalString += lastChar;
+    char c = ' ';
 
-    while (!isSpace(m_inputFileStream.get()))
+    while (!m_inputFileStream.get(c) || !isSpace(c)) // will work lmao?
     {
-        //finalString +=
+        finalString += c;
     }
 
-    return { };
+    if (isKeyword(finalString))
+    {
+        return Token(Token::Kind::Keyword, finalString);
+    }
+
+    return Token(Token::Kind::Identifier, finalString);
 }
 
 bool Lexer::isSpace(char c)
@@ -97,6 +105,18 @@ bool Lexer::isSpace(char c)
     case '\r':
     case '\t':
     case ' ':
+        return true;
+    }
+
+    return false;
+}
+
+bool Lexer::isKeyword(const std::string& identifier) const
+{
+    auto it = std::find(begin(m_keywords), end(m_keywords), identifier);
+
+    if (it != end(m_keywords))
+    {
         return true;
     }
 

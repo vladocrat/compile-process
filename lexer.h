@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "token.h"
 
@@ -13,12 +14,19 @@ public:
     ~Lexer() noexcept;
 
     Token next();
-    Token completeIdentifier();
+    Token completeIdentifier(char lastChar);
     bool isSpace(char c);
-    //check keyword from identifier;
+    bool isKeyword(const std::string& identifier) const;
     //void parse TODO continously call next until file is read.
 
 private:
+    const std::vector<std::string> m_keywords = {
+        "int", "bool", "char", "float", "double", "return", "false",
+        "const", "noexcept", "final", "class", "struct", "true",
+        "template", "private", "public", "protected", "std::string",
+    };
+
+
     template<class T>
     [[nodiscard]] bool checkOpen(const T& stream) const;
 
