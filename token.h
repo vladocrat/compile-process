@@ -7,7 +7,7 @@
 class Token final
 {
 public:
-    enum class Kind {
+    enum class Type {
         Identifier,
         Operator,
         Keyword,
@@ -21,33 +21,36 @@ public:
         ClosedBrace,
         OpenedCurlyBrace,
         ClosedCurlyBrace,
+        OpenedSquareBrace,
+        ClosedSquareBrace,
         EndOfFile
     };
 
     Token() {}; //TODO deletelater
-    Token(Kind kind, const std::string& lexeme);
+    Token(Type kind, const std::string& lexeme);
 
-    const Kind kind()                 const  { return m_kind; }
+    const Type kind()                 const  { return m_type; }
     const std::string lexeme()        const  { return m_lexeme; }
-    const std::string kindStr()       const  { return m_kindStrings.find(m_kind)->second; }
+    const std::string kindStr()       const  { return m_kindStrings.find(m_type)->second; }
 
     bool operator==(const Token&);
     bool operator!=(const Token&);
     friend std::ostream& operator<<(std::ostream& os, const Token& token);
 
 private:
-    std::map<Kind, std::string> m_kindStrings {
-        { Kind::Identifier, "Identifier" },              { Kind::Operator, "Operator" },
-        { Kind::Keyword, "Keyword" },                    { Kind::SemiColon, "Semicolon" },
-        { Kind::Literal, "Literal" },                    { Kind::Separator, "Separator"},
-        { Kind::Undentified, "Undentified" },            { Kind::EndOfFile, "EOF" },
-        { Kind::Directive, "Directive" },                { Kind::Colon, "Colon" },
-        { Kind::OpenedBrace, "OpenBrace" },              { Kind::OpenedBrace, "OpenBrace" },
-        { Kind::ClosedBrace, "ClosedBrace" },            { Kind::ClosedBrace, "ClosedBrace" },
-        { Kind::OpenedCurlyBrace, "OpenedCurlyBrace" },  { Kind::ClosedCurlyBrace, "ClosedCurlyBrace"},
+    std::map<Type, std::string> m_kindStrings {
+        { Type::Identifier, "Identifier" },               { Type::Operator, "Operator" },
+        { Type::Keyword, "Keyword" },                     { Type::SemiColon, "Semicolon" },
+        { Type::Literal, "Literal" },                     { Type::Separator, "Separator"},
+        { Type::Undentified, "Undentified" },             { Type::EndOfFile, "EOF" },
+        { Type::Directive, "Directive" },                 { Type::Colon, "Colon" },
+        { Type::OpenedBrace, "OpenBrace" },               { Type::OpenedBrace, "OpenedBrace" },
+        { Type::ClosedBrace, "ClosedBrace" },             { Type::ClosedBrace, "ClosedBrace" },
+        { Type::OpenedCurlyBrace, "OpenedCurlyBrace" },   { Type::ClosedCurlyBrace, "ClosedCurlyBrace" },
+        { Type::OpenedSquareBrace, "OpenedSquareBrace" }, { Type::ClosedSquareBrace, "ClosedSquareBrace" },
     };
 
-    Kind m_kind { Kind::Undentified };
+    Type m_type          { Type::Undentified };
     std::string m_lexeme { "" };
 };
 
