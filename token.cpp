@@ -23,5 +23,5 @@ bool Token::operator!=(const Token& other)
 
 std::ostream& operator<<(std::ostream& os, const Token& token)
 {
-    return os << token.kindStr() << std::setw(15) << "|" << token.lexeme() << "|";
+    return os << token.kindStr() << std::setw(20 - token.kindStr().length()) << "|" << token.lexeme() << "|";
 }

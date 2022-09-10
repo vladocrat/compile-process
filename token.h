@@ -26,10 +26,10 @@ public:
         EndOfFile
     };
 
-    Token() {}; //TODO deletelater
+    Token() {};
     Token(Type kind, const std::string& lexeme);
 
-    const Type kind()                 const  { return m_type; }
+    const Type kind()                const  { return m_type; }
     const std::string lexeme()        const  { return m_lexeme; }
     const std::string kindStr()       const  { return m_kindStrings.find(m_type)->second; }
 

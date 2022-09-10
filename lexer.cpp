@@ -25,7 +25,7 @@ void Lexer::parse()
         t = next();
         //std::cout << t << std::endl;
         m_outputFileStream << t << "\n";
-    } while (t != Token(Token::Type::EndOfFile, ""));
+    } while (t != Token(Token:: Type::EndOfFile, ""));
 }
 
 Token Lexer::next()
@@ -37,13 +37,13 @@ Token Lexer::next()
         switch (c)
         {
         case '\n':
-            return Token(Token::Type::Separator, "\\n");
+            return Token(Token:: Type::Separator, "\\n");
         case '\r':
-            return Token(Token::Type::Separator, "\\r");
+            return Token(Token:: Type::Separator, "\\r");
         case '\t':
-            return Token(Token::Type::Separator, "\\t");
+            return Token(Token:: Type::Separator, "\\t");
         case ' ':
-            return Token(Token::Type::Separator, "\' \'");
+            return Token(Token:: Type::Separator, "\' \'");
         case 'a':
         case 'b':
         case 'c':
@@ -113,49 +113,49 @@ Token Lexer::next()
         case '#':
             return completeDirective(c);
         case ';':
-            return Token(Token::Type::SemiColon, ";");
+            return Token(Token:: Type::SemiColon, ";");
         case ':':
-            return Token(Token::Type::Colon, ":");
+            return Token(Token:: Type::Colon, ":");
         case '(':
-            return Token(Token::Type::OpenedBrace, "(");
+            return Token(Token:: Type::OpenedBrace, "(");
         case ')':
-            return Token(Token::Type::ClosedBrace, ")");
+            return Token(Token:: Type::ClosedBrace, ")");
         case '<':
             return completeAngledBrace(c);
         case '>':
             return completeAngledBrace(c);
         case '{':
-            return Token(Token::Type::OpenedCurlyBrace, "{");
+            return Token(Token:: Type::OpenedCurlyBrace, "{");
         case '}':
-            return Token(Token::Type::ClosedCurlyBrace, "}");
+            return Token(Token:: Type::ClosedCurlyBrace, "}");
         case '\"':
             return completeStringLiteral(c);
         case '=':
-            return Token(Token::Type::Operator, "=");
+            return Token(Token:: Type::Operator, "=");
         case '*':
-            return Token(Token::Type::Operator, "*");
+            return Token(Token:: Type::Operator, "*");
         case '+':
-            return Token(Token::Type::Operator, "+");
+            return Token(Token:: Type::Operator, "+");
         case '-':
-            return Token(Token::Type::Operator, "-");
+            return Token(Token:: Type::Operator, "-");
         case '!':
-            return Token(Token::Type::Operator, "!");
+            return Token(Token:: Type::Operator, "!");
         case '&':
-            return Token(Token::Type::Operator, "&");
+            return Token(Token:: Type::Operator, "&");
         case '.':
-            return Token(Token::Type::Operator, ".");
+            return Token(Token:: Type::Operator, ".");
         case ',':
-            return Token(Token::Type::Operator, ",");
+            return Token(Token:: Type::Operator, ",");
         case '[':
-            return Token(Token::Type::OpenedSquareBrace, "[");
+            return Token(Token:: Type::OpenedSquareBrace, "[");
         case ']':
-            return Token(Token::Type::ClosedSquareBrace, "]");
+            return Token(Token:: Type::ClosedSquareBrace, "]");
         case '\'':
             return completeCharLiteral(c);
         }
     }
 
-    return Token(Token::Type::EndOfFile, "");
+    return Token(Token:: Type::EndOfFile, "");
 }
 
 Token Lexer::completeIdentifier(char lastChar)
@@ -172,10 +172,10 @@ Token Lexer::completeIdentifier(char lastChar)
 
     if (isKeyword(finalString))
     {
-        return Token(Token::Type::Keyword, finalString);
+        return Token(Token:: Type::Keyword, finalString);
     }
 
-    return Token(Token::Type::Identifier, finalString);
+    return Token(Token:: Type::Identifier, finalString);
 }
 
 Token Lexer::completeNumber(char lastNumber)
@@ -195,10 +195,10 @@ Token Lexer::completeNumber(char lastNumber)
 
     if (isKeyword(finalString))
     {
-        return Token(Token::Type::Keyword, finalString);
+        return Token(Token:: Type::Keyword, finalString);
     }
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token:: Type::Literal, finalString);
 }
 
 Token Lexer::commentToSpace()
@@ -212,7 +212,7 @@ Token Lexer::commentToSpace()
 
     m_inputFileStream.get(c);
 
-    return Token(Token::Type::Separator, "\\n");
+    return Token(Token:: Type::Separator, "\\n");
 }
 
 Token Lexer::completeDirective(char lastChar)
@@ -226,7 +226,7 @@ Token Lexer::completeDirective(char lastChar)
         finalString += c;
     }
 
-    return Token(Token::Type::Directive, finalString);
+    return Token(Token:: Type::Directive, finalString);
 }
 
 Token Lexer::completeAngledBrace(char lastChar)
@@ -240,10 +240,10 @@ Token Lexer::completeAngledBrace(char lastChar)
         m_inputFileStream.get(c);
         finalString += c;
 
-        return Token(Token::Type::Operator, finalString);
+        return Token(Token:: Type::Operator, finalString);
     }
 
-    return Token(Token::Type::Operator, finalString);
+    return Token(Token:: Type::Operator, finalString);
 }
 
 Token Lexer::completeStringLiteral(char lastChar)
@@ -261,7 +261,7 @@ Token Lexer::completeStringLiteral(char lastChar)
     m_inputFileStream.get(c);
     finalString += c;
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token:: Type::Literal, finalString);
 }
 
 Token Lexer::completeCharLiteral(char lastChar)
@@ -279,7 +279,7 @@ Token Lexer::completeCharLiteral(char lastChar)
     m_inputFileStream.get(c);
     finalString += c;
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token:: Type::Literal, finalString);
 }
 
 bool Lexer::isSpace(char c) const
