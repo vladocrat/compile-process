@@ -172,10 +172,10 @@ Token Lexer::completeIdentifier(char lastChar)
 
     if (isKeyword(finalString))
     {
-        return Token(Token:: Type::Keyword, finalString);
+        return Token(Token::Type::Keyword, finalString);
     }
 
-    return Token(Token:: Type::Identifier, finalString);
+    return Token(Token::Type::Identifier, finalString);
 }
 
 Token Lexer::completeNumber(char lastNumber)
@@ -195,10 +195,10 @@ Token Lexer::completeNumber(char lastNumber)
 
     if (isKeyword(finalString))
     {
-        return Token(Token:: Type::Keyword, finalString);
+        return Token(Token::Type::Keyword, finalString);
     }
 
-    return Token(Token:: Type::Literal, finalString);
+    return Token(Token::Type::Literal, finalString);
 }
 
 Token Lexer::commentToSpace()
@@ -212,7 +212,7 @@ Token Lexer::commentToSpace()
 
     m_inputFileStream.get(c);
 
-    return Token(Token:: Type::Separator, "\\n");
+    return Token(Token::Type::Separator, "\\n");
 }
 
 Token Lexer::completeDirective(char lastChar)
@@ -226,7 +226,7 @@ Token Lexer::completeDirective(char lastChar)
         finalString += c;
     }
 
-    return Token(Token:: Type::Directive, finalString);
+    return Token(Token::Type::Directive, finalString);
 }
 
 Token Lexer::completeAngledBrace(char lastChar)
@@ -240,10 +240,10 @@ Token Lexer::completeAngledBrace(char lastChar)
         m_inputFileStream.get(c);
         finalString += c;
 
-        return Token(Token:: Type::Operator, finalString);
+        return Token(Token::Type::Operator, finalString);
     }
 
-    return Token(Token:: Type::Operator, finalString);
+    return Token(Token::Type::Operator, finalString);
 }
 
 Token Lexer::completeStringLiteral(char lastChar)
@@ -261,7 +261,7 @@ Token Lexer::completeStringLiteral(char lastChar)
     m_inputFileStream.get(c);
     finalString += c;
 
-    return Token(Token:: Type::Literal, finalString);
+    return Token(Token::Type::Literal, finalString);
 }
 
 Token Lexer::completeCharLiteral(char lastChar)
@@ -279,7 +279,7 @@ Token Lexer::completeCharLiteral(char lastChar)
     m_inputFileStream.get(c);
     finalString += c;
 
-    return Token(Token:: Type::Literal, finalString);
+    return Token(Token::Type::Literal, finalString);
 }
 
 bool Lexer::isSpace(char c) const
