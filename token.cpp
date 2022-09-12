@@ -3,14 +3,14 @@
 #include <algorithm>
 #include <iomanip>
 
-Token::Token(Type kind, const std::string& lexeme) : m_type(kind), m_lexeme(lexeme)
+Token::Token(Type type, const std::string& lexeme) : m_type(type), m_lexeme(lexeme)
 {
 
 }
 
 bool Token::operator==(const Token& other)
 {
-    if (m_type != other.kind()) return false;
+    if (m_type != other.type()) return false;
     if (m_lexeme != other.lexeme()) return false;
 
     return true;
@@ -23,5 +23,5 @@ bool Token::operator!=(const Token& other)
 
 std::ostream& operator<<(std::ostream& os, const Token& token)
 {
-    return os << token.kindStr() << std::setw(20 - token.kindStr().length()) << "|" << token.lexeme() << "|";
+    return os << token.typeStr() << std::setw(20 - token.typeStr().length()) << "|" << token.lexeme() << "|";
 }

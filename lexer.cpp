@@ -25,137 +25,83 @@ void Lexer::parse()
         t = next();
         //std::cout << t << std::endl;
         m_outputFileStream << t << "\n";
-    } while (t != Token(Token:: Type::EndOfFile, ""));
+    } while (t != Token(Token::Type::EndOfFile, ""));
 }
 
 Token Lexer::next()
 {
-    char c;
+    char c = ' ';
 
     while (m_inputFileStream.get(c) && !m_inputFileStream.eof())
     {
+        if (isChar(c))
+        {
+            return completeIdentifier(c);
+        }
+
+        if (isNumber(c))
+        {
+            return completeNumber(c);
+        }
+
         switch (c)
         {
         case '\n':
-            return Token(Token:: Type::Separator, "\\n");
+            return Token(Token::Type::Separator, "\\n");
         case '\r':
-            return Token(Token:: Type::Separator, "\\r");
+            return Token(Token::Type::Separator, "\\r");
         case '\t':
-            return Token(Token:: Type::Separator, "\\t");
+            return Token(Token::Type::Separator, "\\t");
         case ' ':
-            return Token(Token:: Type::Separator, "\' \'");
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-        case 'g':
-        case 'h':
-        case 'i':
-        case 'j':
-        case 'k':
-        case 'l':
-        case 'm':
-        case 'n':
-        case 'o':
-        case 'p':
-        case 'q':
-        case 'r':
-        case 's':
-        case 't':
-        case 'u':
-        case 'v':
-        case 'w':
-        case 'x':
-        case 'y':
-        case 'z':
-        case 'A':
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'E':
-        case 'F':
-        case 'G':
-        case 'H':
-        case 'I':
-        case 'J':
-        case 'K':
-        case 'L':
-        case 'M':
-        case 'N':
-        case 'O':
-        case 'P':
-        case 'Q':
-        case 'R':
-        case 'S':
-        case 'T':
-        case 'U':
-        case 'V':
-        case 'W':
-        case 'X':
-        case 'Y':
-        case 'Z':
-            return completeIdentifier(c);
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            return completeNumber(c);
+            return Token(Token::Type::Separator, "\' \'");
         case '/':
             return commentToSpace();
         case '#':
             return completeDirective(c);
         case ';':
-            return Token(Token:: Type::SemiColon, ";");
+            return Token(Token::Type::SemiColon, ";");
         case ':':
-            return Token(Token:: Type::Colon, ":");
+            return Token(Token::Type::Colon, ":");
         case '(':
-            return Token(Token:: Type::OpenedBrace, "(");
+            return Token(Token::Type::OpenedBrace, "(");
         case ')':
-            return Token(Token:: Type::ClosedBrace, ")");
+            return Token(Token::Type::ClosedBrace, ")");
         case '<':
             return completeAngledBrace(c);
         case '>':
             return completeAngledBrace(c);
         case '{':
-            return Token(Token:: Type::OpenedCurlyBrace, "{");
+            return Token(Token::Type::OpenedCurlyBrace, "{");
         case '}':
-            return Token(Token:: Type::ClosedCurlyBrace, "}");
+            return Token(Token::Type::ClosedCurlyBrace, "}");
         case '\"':
             return completeStringLiteral(c);
         case '=':
-            return Token(Token:: Type::Operator, "=");
+            return Token(Token::Type::Operator, "=");
         case '*':
-            return Token(Token:: Type::Operator, "*");
+            return Token(Token::Type::Operator, "*");
         case '+':
-            return Token(Token:: Type::Operator, "+");
+            return Token(Token::Type::Operator, "+");
         case '-':
-            return Token(Token:: Type::Operator, "-");
+            return Token(Token::Type::Operator, "-");
         case '!':
-            return Token(Token:: Type::Operator, "!");
+            return Token(Token::Type::Operator, "!");
         case '&':
-            return Token(Token:: Type::Operator, "&");
+            return Token(Token::Type::Operator, "&");
         case '.':
-            return Token(Token:: Type::Operator, ".");
+            return Token(Token::Type::Operator, ".");
         case ',':
-            return Token(Token:: Type::Operator, ",");
+            return Token(Token::Type::Operator, ",");
         case '[':
-            return Token(Token:: Type::OpenedSquareBrace, "[");
+            return Token(Token::Type::OpenedSquareBrace, "[");
         case ']':
-            return Token(Token:: Type::ClosedSquareBrace, "]");
+            return Token(Token::Type::ClosedSquareBrace, "]");
         case '\'':
             return completeCharLiteral(c);
         }
     }
 
-    return Token(Token:: Type::EndOfFile, "");
+    return Token(Token::Type::EndOfFile, "");
 }
 
 Token Lexer::completeIdentifier(char lastChar)

@@ -27,18 +27,18 @@ public:
     };
 
     Token() {};
-    Token(Type kind, const std::string& lexeme);
+    Token(Type type, const std::string& lexeme);
 
-    const Type kind()                const  { return m_type; }
+    const Type type()                 const  { return m_type; }
     const std::string lexeme()        const  { return m_lexeme; }
-    const std::string kindStr()       const  { return m_kindStrings.find(m_type)->second; }
+    const std::string typeStr()       const  { return m_typeStrings.find(m_type)->second; }
 
     bool operator==(const Token&);
     bool operator!=(const Token&);
     friend std::ostream& operator<<(std::ostream& os, const Token& token);
 
 private:
-    std::map<Type, std::string> m_kindStrings {
+    std::map<Type, std::string> m_typeStrings {
         { Type::Identifier, "Identifier" },               { Type::Operator, "Operator" },
         { Type::Keyword, "Keyword" },                     { Type::SemiColon, "Semicolon" },
         { Type::Literal, "Literal" },                     { Type::Separator, "Separator"},
