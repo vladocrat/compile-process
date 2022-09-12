@@ -106,45 +106,38 @@ Token Lexer::next()
 
 Token Lexer::completeIdentifier(char lastChar)
 {
-    std::string finalString = "";
-    finalString += lastChar;
-    char c = lastChar;
+    setUpString(lastChar);
 
-    while ((isChar(c)) && isChar(m_inputFileStream.peek()))
+    while ((isChar(m_detectedChar)) && isChar(m_inputFileStream.peek()))
     {
-        m_inputFileStream.get(c);
-        finalString += c;
+        getLastCharAndAppend();
     }
 
-    if (isKeyword(finalString))
+    if (isKeyword(m_finalString))
     {
-        return Token(Token::Type::Keyword, finalString);
+        return Token(Token::Type::Keyword, m_finalString);
     }
 
-    return Token(Token::Type::Identifier, finalString);
+    return Token(Token::Type::Identifier, m_finalString);
 }
 
 Token Lexer::completeNumber(char lastNumber)
 {
-    std::string finalString = "";
-    finalString += lastNumber;
-    char c = ' ';
+    setUpString(lastNumber);
 
-    while (isNumber(c) && isNumber(m_inputFileStream.peek()))
+    while (isNumber(m_detectedChar) && isNumber(m_inputFileStream.peek()))
     {
-        m_inputFileStream.get(c);
-        finalString += c;
+        getLastCharAndAppend();
     }
 
-    m_inputFileStream.get(c);
-    finalString += c;
+    getLastCharAndAppend();
 
-    if (isKeyword(finalString))
+    if (isKeyword(m_finalString))
     {
-        return Token(Token::Type::Keyword, finalString);
+        return Token(Token::Type::Keyword, m_finalString);
     }
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token::Type::Literal, m_finalString);
 }
 
 Token Lexer::commentToSpace()
@@ -163,69 +156,69 @@ Token Lexer::commentToSpace()
 
 Token Lexer::completeDirective(char lastChar)
 {
-    std::string finalString = "";
-    finalString += lastChar;
-    char c = ' ';
+    setUpString(lastChar);
 
-    while ((!m_inputFileStream.get(c) || !isSpace(c)) && isChar(c))
+    while ((!m_inputFileStream.get(m_detectedChar) || !isSpace(m_detectedChar)) && isChar(m_detectedChar))
     {
-        finalString += c;
+        m_finalString += m_detectedChar;
     }
 
-    return Token(Token::Type::Directive, finalString);
+    return Token(Token::Type::Directive, m_finalString);
 }
 
 Token Lexer::completeAngledBrace(char lastChar)
 {
-    std::string finalString = "";
-    finalString += lastChar;
-    char c = ' ';
+    setUpString(lastChar);
 
     if (isDoubleAngledBrace(lastChar, m_inputFileStream.peek()))
     {
-        m_inputFileStream.get(c);
-        finalString += c;
+        getLastCharAndAppend();
 
-        return Token(Token::Type::Operator, finalString);
+        return Token(Token::Type::Operator, m_finalString);
     }
 
-    return Token(Token::Type::Operator, finalString);
+    return Token(Token::Type::Operator, m_finalString);
 }
 
 Token Lexer::completeStringLiteral(char lastChar)
 {
-    std::string finalString = "";
-    finalString += lastChar;
-    char c = ' ';
+    setUpString(lastChar);
 
     while (m_inputFileStream.peek() != '\"')
     {
-        m_inputFileStream.get(c);
-        finalString += c;
+        getLastCharAndAppend();
     }
 
-    m_inputFileStream.get(c);
-    finalString += c;
+    getLastCharAndAppend();
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token::Type::Literal, m_finalString);
 }
 
 Token Lexer::completeCharLiteral(char lastChar)
 {
-    std::string finalString = "";
-    finalString += lastChar;
-    char c = ' ';
+    setUpString(lastChar);
 
     while (m_inputFileStream.peek() != '\'')
     {
-        m_inputFileStream.get(c);
-        finalString += c;
+        getLastCharAndAppend();
     }
 
-    m_inputFileStream.get(c);
-    finalString += c;
+    getLastCharAndAppend();
 
-    return Token(Token::Type::Literal, finalString);
+    return Token(Token::Type::Literal, m_finalString);
+}
+
+void Lexer::setUpString(char c)
+{
+    m_finalString = "";
+    m_finalString += c;
+    m_detectedChar = c;
+}
+
+void Lexer::getLastCharAndAppend()
+{
+    m_inputFileStream.get(m_detectedChar);
+    m_finalString += m_detectedChar;
 }
 
 bool Lexer::isSpace(char c) const

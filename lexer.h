@@ -29,6 +29,8 @@ private:
     inline bool isNumber(char c) const;
     inline bool isChar(char c) const;
     inline bool isDoubleAngledBrace(char currentChar, char nextChar) const;
+    void setUpString(char c);
+    void getLastCharAndAppend();
 
     template<class T>
     [[nodiscard]] bool checkOpen(const T& stream) const;
@@ -71,6 +73,8 @@ private:
 
     std::ifstream m_inputFileStream;
     std::ofstream m_outputFileStream;
+    std::string m_finalString { "" };
+    char m_detectedChar       { ' ' };
 };
 
 #endif // LEXER_H
